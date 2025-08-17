@@ -1,8 +1,6 @@
 /*markdown
 # Laboratorio Práctico: Normalización, Claves y Restricciones en Bases de Datos Relacionales
-*/
 
-/*markdown
 ## Instrucciones
 En este laboratorio, explorarás la normalización, las claves y las restricciones en Datasette. Inicialmente, aprenderás a minimizar la redundancia y la inconsistencia de datos en una base de datos normalizando tablas. A continuación, aprenderás a usar claves para identificar de manera única un registro en una tabla, establecer una relación entre tablas e identificar la relación entre ellas. Finalmente, aprenderás sobre los diferentes tipos de restricciones del modelo relacional que ayudan a mantener la integridad de los datos en un modelo de datos relacional.
 
@@ -22,10 +20,6 @@ En este laboratorio, utilizarás Datasette , una herramienta multiuso de código
 ## Conjunto de datos utilizado en este Laboratorio
 En este laboratorio, utilizarás un conjunto de datos de BookShop.
 
-
-*/
-
-/*markdown
 # Ejercicio 1: Normalización
 En este ejercicio, aprenderás sobre la primera forma normal (1NF) e implementarás la segunda forma normal (2NF).
 
@@ -33,9 +27,7 @@ En este ejercicio, aprenderás sobre la primera forma normal (1NF) e implementar
 En esta tarea de normalización, trabajarás con la tabla BookShop. La siguiente imagen muestra la tabla BookShop:
 
 ![alt text](image.png)
-*/
 
-/*markdown
 Responderás algunas preguntas para determinar si la tabla anterior está en 1NF.
 
 1. ¿La tabla anterior tiene filas únicas?
@@ -86,9 +78,6 @@ Responderás algunas preguntas para determinar si la tabla anterior está en 1NF
    Para normalizar esta tabla, añade una fila extra y separa los nombres de autores múltiples así como los ID de autores múltiples de la fila que contiene datos con múltiples valores en su propia fila.
 </details>
 
-*/
-
-/*markdown
 ## Tarea B: Segunda forma normal (2NF)
 1. Descarga el script BookShop-CREATE-INSERT.sql a continuación, cópialo y pégalo en el laboratorio de Datasette, y ejecútalo. El script eliminará cualquier tabla BookShop anterior que exista, creará la nueva tabla BookShop y la poblará con los datos de muestra requeridos para este laboratorio.
 
@@ -149,7 +138,6 @@ Responderás algunas preguntas para determinar si la tabla anterior está en 1NF
 ![alt text](image-2.png)
 ![alt text](image-3.png)
 
-
 */
 
 -- Drop the tables in case they exist
@@ -185,12 +173,10 @@ SELECT * FROM BookShop;
 
 
 /*markdown
+
 2. Por definición, una relación está en segunda forma normal si ya está en 1NF y no contiene dependencias parciales. Si miras la tabla BookShop, encontrarás que cada columna en la tabla tiene un valor único o atómico, pero tiene múltiples libros del mismo autor. Esto significa que los detalles de AUTHOR_ID, AUTHOR_NAME y AUTHOR_BIO para BOOK_ID B101 y B401 son los mismos. A medida que aumenta el número de filas en la tabla, estarás almacenando innecesariamente más y más ocurrencias de esta misma información. Y si un autor actualiza su biografía, debes actualizar todas estas ocurrencias.
 
 ![alt text](image-4.png)
-*/
-
-/*markdown
 3. En este escenario, para hacer cumplir la 2NF puedes sacar la información del autor, como AUTHOR_ID, AUTHOR_NAME y AUTHOR_BIO de la tabla BookShop a otra tabla, por ejemplo, una tabla llamada BookShop_AuthorDetails. Luego vinculas cada libro en la tabla BookShop a la fila relevante en la tabla BookShop_AuthorDetails, utilizando una columna común única como AUTHOR_ID para vincular las tablas. Para crear la nueva tabla BookShop_AuthorDetails, copia el código a continuación y pégalo en el área de texto de datasette. Haz clic en el botón Enviar consulta.
 
 ```sql
@@ -207,6 +193,7 @@ select * from BookShop_AuthorDetails;
 
 
 ![alt text](image-5.png)
+
 */
 
 /*Eliminar la tabla si existe*/
@@ -224,16 +211,24 @@ CREATE TABLE BookShop_AuthorDetails
 insert into BookShop_AuthorDetails select DISTINCT AUTHOR_ID, AUTHOR_NAME, AUTHOR_BIO FROM BookShop;
 
 
+
 select * from BookShop_AuthorDetails;
 
 /*markdown
+/*markdown
+
 4. Ahora solo estás almacenando la información del autor una vez por autor y solo tienes que actualizarla en un lugar; reduciendo la redundancia y aumentando la consistencia de los datos. Así se asegura la 2NF.
 
 ![alt text](image-6.png)
 
 ![alt text](image-7.png)
 
+![alt text](image-13.png)
+
 */
+
+SELECT * FROM BookShop;
+SELECT * FROM BookShop_AuthorDetails;
 
 /*markdown
 # Ejercicio 2: Claves
